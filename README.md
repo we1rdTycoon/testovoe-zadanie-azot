@@ -1,4 +1,7 @@
 # testovoe-zadanie-azot
+
+https://we1rdtycoon.github.io/testovoe-zadanie-azot/index.html
+
 ![Image alt](https://github.com/we1rdTycoon/testovoe-zadanie-azot/raw/main/Безымянный.png)
 
 Сделать страницу выбора периода. На ней должны быть 2 даты «Период С» и «Период По» и кнопка «Проверить»
