@@ -31,7 +31,7 @@ var app = new Vue({
           return;
         }
         this.visible1 = true;
-        this.messsge = "Выбран период с " + $("#from").val() + " по " + $("#to").val() + ". Кол-во дней: " + count + ", из них праздничных:" + n;
+        this.messsge = "Выбран период с " + $("#from").val() + " по " + $("#to").val() + ". Кол-во дней: " + (count+n) + ", из них праздничных:" + n;
       }
     },
     created: function () {
