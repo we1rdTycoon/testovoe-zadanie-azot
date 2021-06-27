@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="css/style.css" /> 
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
-  <script src="jquary/jquery-ui.js"></script>
+  <script src="jquery/jquery-ui.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
     integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
@@ -29,123 +29,6 @@
     <button class="send" v-on:click="countRabbits">Проверить</button>
   </div>
 </body>
-<script>
-  var app = new Vue({
-    el: '#wrap',
-    data: {
-      visible: false,
-      visible1: false,
-      prazdnichny: [new Date("2021-05-01"), new Date("2021-05-09")],
-      messsge:"",
-    },
-    methods: {
-      countRabbits: function () {
-        this.visible1 = false;
-        let n = 0;
-        let count = (new Date(moment($("#to").val(), "DD.MM.YYYY").format("YYYY-MM-DD"))).getTime() - (new Date(moment($("#from").val(), "DD.MM.YYYY").format("YYYY-MM-DD"))).getTime();
-        count = (count / (1000 * 3600 * 24))+1;
-        console.log(count);
-        if (count > 6 && count < 21) {
-          this.visible = false;
-          this.prazdnichny.forEach(function (item, i, arr) {
-            console.log(item);
-            console.log(new Date(moment(new Date($("#from").val()), "DD.MM.YYYY").format("YYYY-MM-DD")));
-            if (item >= new Date(moment($("#from").val(), "DD.MM.YYYY").format("YYYY-MM-DD")) && item <= new Date(moment($("#to").val(), "DD.MM.YYYY").format("YYYY-MM-DD"))) {
-              n = n + 1;
-            }
-          });
-          if (n > 0) {
-            $("#to").datepicker("setDate", new Date(moment($("#to").val(), "DD.MM.YYYY").add(n, 'days').format("YYYY-MM-DD")));
-          }
-        } else {
-          this.messsge = "Допустим диапозон от 7 до 20 дней включительно."
-          this.visible = true;
-          return;
-        }
-        this.visible1 = true;
-        this.messsge = "Выбран период с " + $("#from").val() + " по " + $("#to").val() + ". Кол-во дней: " + count + ", из них праздничных:" + n;
-      }
-    },
-    created: function () {
-      $.datepicker.regional['ru'] = {
-        closeText: 'Закрыть',
-        prevText: 'Предыдущий',
-        nextText: 'Следующий',
-        currentText: 'Сегодня',
-        monthNames: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-        monthNamesShort: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
-        dayNames: ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'],
-        dayNamesShort: ['вск', 'пнд', 'втр', 'срд', 'чтв', 'птн', 'сбт'],
-        dayNamesMin: ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'],
-        weekHeader: 'Не',
-        dateFormat: 'dd.mm.yy',
-        firstDay: 1,
-        isRTL: false,
-        showMonthAfterYear: false,
-        yearSuffix: '',
-        altFormat: "yy-mm-dd"
-      };
-      $.datepicker.setDefaults($.datepicker.regional['ru']);
-
-      $(()=> {
-        $("#from").datepicker({
-          maxDate: new Date("2021-12-31"),
-          minDate: new Date("2021-01-01"),
-          beforeShowDay: function (date) {
-            if ((date.getDate() == 1 && date.getMonth() == 4) || (date.getDate() == 9 && date.getMonth() == 4)) {
-              return [true, 'odd'];
-            }
-            if ((date.getDate() >= 21 && date.getMonth() == 4) && (date.getDate() <= 27 && date.getMonth() == 4)) {
-              return [true, 'odd1'];
-            }
-            return [true, ''];
-          },
-          onSelect: (date)=> {
-            this.visible1 = false;
-            let a = moment(date, "DD.MM.YYYY").format("YYYY-MM-DD");
-            date = new Date(a)
-            if ((date.getDate() >= 21 && date.getMonth() == 4) && (date.getDate() <= 27 && date.getMonth() == 4)) {
-              this.visible=true;
-              this.messsge= "Выбор дат с 21.05 по 27.05 запрещен";
-              $("#from").datepicker("setDate", "");
-              $("#from").blur();
-            }else{
-              this.visible=false;
-            }
-          },
-        });
-        $("#to").datepicker({
-          maxDate: new Date("2021-12-31"),
-          minDate: new Date("2021-01-01"),
-          beforeShowDay: function (date) {
-            if ((date.getDate() == 1 && date.getMonth() == 4) || (date.getDate() == 9 && date.getMonth() == 4)) {
-              return [true, 'odd'];
-            }
-            if ((date.getDate() >= 21 && date.getMonth() == 4) && (date.getDate() <= 27 && date.getMonth() == 4)) {
-              return [true, 'odd1'];
-            }
-            return [true, ''];
-          },
-          onSelect: (date) => {
-            this.visible1 = false;
-            let a = moment(date, "DD.MM.YYYY").format("YYYY-MM-DD");
-            date = new Date(a)
-            if ((date.getDate() >= 21 && date.getMonth() == 4) && (date.getDate() <= 27 && date.getMonth() == 4)) {
-              this.visible=true;
-              this.messsge= "Выбор дат с 21.05 по 27.05 запрещен";
-              $("#to").datepicker("setDate", "");
-              $("#to").blur();
-            }else{
-              this.visible=false;
-            }
-          },
-        });
-
-      });
-    },
-  });
-
-
-</script>
+<script src="js/script.js"></script>
 
 </html>
